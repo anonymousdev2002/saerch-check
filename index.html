@@ -17,7 +17,6 @@
       color: white;
       padding: 20px;
       overflow-x: hidden;
-      min-height: 100vh;
     }
 
     h1 {
@@ -192,6 +191,20 @@
     }
 
     @media (max-width: 768px) {
+      html, body {
+        height: auto;
+        overflow-x: hidden;
+      }
+
+      body {
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+
+      .suggested-section {
+        margin-bottom: 0;
+      }
+
       h1 { font-size: 2rem; }
 
       .form-control { font-size: 1rem; padding: 12px; }
@@ -258,7 +271,7 @@
                 <div class="genre-label">${term}</div>
               `;
               item.addEventListener('click', () => {
-                window.location.href = `movie.html?id=${movie.imdbID}`;
+                window.location.href = \`movie.html?id=\${movie.imdbID}\`;
               });
               suggestedList.appendChild(item);
             }
@@ -292,7 +305,7 @@
           <div><h3>${movie.Title}</h3><p>${movie.Year}</p></div>
         `;
         div.addEventListener('click', () => {
-          window.location.href = `movie.html?id=${movie.imdbID}`;
+          window.location.href = \`movie.html?id=\${movie.imdbID}\`;
         });
         searchList.appendChild(div);
       });
