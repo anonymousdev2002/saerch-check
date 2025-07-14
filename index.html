@@ -100,12 +100,11 @@
     }
 
     .suggested-section {
-  margin-top: 30px;
-  overflow: hidden;
-  clear: both;
-  padding-bottom: 10px; /* Reduce space below movies */
-}
-
+      margin-top: 30px;
+      overflow: hidden;
+      clear: both;
+      padding-bottom: 0; /* Removed space */
+    }
 
     .suggested-title {
       font-size: 1.8rem;
@@ -182,7 +181,7 @@
       justify-content: center;
       gap: 30px;
       margin-top: 40px;
-      padding-bottom: 40px;
+      padding-bottom: 0; /* Removed extra space */
     }
 
     .movie-info, .movie-poster img {
@@ -192,6 +191,19 @@
     .movie-info h3 {
       color: #ffde59;
       font-size: 1.8rem;
+    }
+
+    footer {
+      margin-top: 0; /* Removed top margin */
+      text-align: center;
+      padding: 16px 0;
+      font-size: 0.95rem;
+      background: linear-gradient(90deg, #00ffe7, #8f00ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: shimmerMove 5s linear infinite;
     }
 
     @media (max-width: 768px) {
@@ -225,9 +237,9 @@
 
   <div class="result-container" id="result-grid"></div>
   <footer style="
-  margin: 0;
-  padding: 12px 0 20px;
+  margin-top: 40px;
   text-align: center;
+  padding: 16px 0;
   font-size: 0.95rem;
   background: linear-gradient(90deg, #00ffe7, #8f00ff);
   background-clip: text;
@@ -239,6 +251,7 @@
   🚀 Made with ❤️ by <strong>dev_shivraj</strong> | Powered by <a href="https://www.omdbapi.com/" target="_blank" style="color: inherit; text-decoration: none;"><strong>OMDb API</strong></a>
 </footer>
 
+  <script>
     const movieSearchBox = document.getElementById('movie-search-box');
     const searchList = document.getElementById('search-list');
     const resultGrid = document.getElementById('result-grid');
