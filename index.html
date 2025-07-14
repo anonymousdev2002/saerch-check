@@ -103,7 +103,7 @@
       margin-top: 30px;
       overflow: hidden;
       clear: both;
-      padding-bottom: 0; /* Removed space */
+      padding-bottom: 0;
     }
 
     .suggested-title {
@@ -181,7 +181,7 @@
       justify-content: center;
       gap: 30px;
       margin-top: 40px;
-      padding-bottom: 0; /* Removed extra space */
+      padding-bottom: 0;
     }
 
     .movie-info, .movie-poster img {
@@ -194,7 +194,7 @@
     }
 
     footer {
-      margin-top: 0; /* Removed top margin */
+      margin-top: 0;
       text-align: center;
       padding: 16px 0;
       font-size: 0.95rem;
@@ -229,102 +229,110 @@
     <div class="search-list hide-search-list" id="search-list"></div>
   </div>
 
-  <!-- Suggested Movies -->
   <div class="suggested-section">
     <h2 class="suggested-title">🔥 Suggested Movies</h2>
     <div class="suggested-wrapper" id="suggested-list"></div>
   </div>
 
   <div class="result-container" id="result-grid"></div>
-  <footer style="
-  margin-top: 40px;
-  text-align: center;
-  padding: 16px 0;
-  font-size: 0.95rem;
-  background: linear-gradient(90deg, #00ffe7, #8f00ff);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: shimmerMove 5s linear infinite;
-">
-  🚀 Made with ❤️ by <strong>dev_shivraj</strong> | Powered by <a href="https://www.omdbapi.com/" target="_blank" style="color: inherit; text-decoration: none;"><strong>OMDb API</strong></a>
-</footer>
 
-  <script>
-    const movieSearchBox = document.getElementById('movie-search-box');
-    const searchList = document.getElementById('search-list');
-    const resultGrid = document.getElementById('result-grid');
-    const suggestedList = document.getElementById('suggested-list');
+  <footer>
+    🚀 Made by <strong>dev_shivraj</strong> | Powered by 
+    <a href="https://www.omdbapi.com/" target="_blank" style="color: inherit; text-decoration: none;"><strong>OMDb API</strong></a>
+  </footer>
 
-    const keywords = ["Batman", "Thor", "Avengers", "Matrix", "Joker", "Dune", "Interstellar", "Moana", "Coco"];
-    const usedIds = new Set();
+<script>
+  const movieSearchBox = document.getElementById('movie-search-box');
+  const searchList = document.getElementById('search-list');
+  const resultGrid = document.getElementById('result-grid');
+  const suggestedList = document.getElementById('suggested-list');
 
-    async function loadSuggestedMovies() {
-      for (const term of keywords) {
-        const res = await fetch(`https://www.omdbapi.com/?s=${term}&page=1&apikey=fc1fef96`);
-        const data = await res.json();
-        if (data.Response === "True") {
-          for (const movie of data.Search) {
-            if (!usedIds.has(movie.imdbID)) {
-              usedIds.add(movie.imdbID);
-              const item = document.createElement('div');
-              item.className = 'suggested-movie';
-              item.dataset.id = movie.imdbID;
-              item.innerHTML = `
-                <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/200x300'}">
-                <div class="suggested-movie-title">${movie.Title}</div>
-                <div class="suggested-movie-year">${movie.Year}</div>
-                <div class="genre-label">${term}</div>
-              `;
-              item.addEventListener('click', () => {
-                window.location.href = `movie.html?id=${movie.imdbID}`;
-              });
-              suggestedList.appendChild(item);
-            }
-          }
-        }
-      }
-    }
+  const keywords = ["Batman", "Thor", "Avengers", "Matrix", "Joker", "Dune", "Interstellar", "Moana", "Coco"];
+  const usedIds = new Set();
 
-    async function findMovies() {
-      let searchTerm = movieSearchBox.value.trim();
-      if (searchTerm.length > 0) {
-        const res = await fetch(`https://www.omdbapi.com/?s=${searchTerm}&page=1&apikey=fc1fef96`);
-        const data = await res.json();
-        if (data.Response === "True") {
-          displayMovieList(data.Search);
-          searchList.classList.remove('hide-search-list');
-        }
-      } else {
-        searchList.classList.add('hide-search-list');
-      }
-    }
+  async function loadSuggestedMovies() {
+    const genreMovies = [];
 
-    function displayMovieList(movies) {
-      searchList.innerHTML = "";
-      movies.forEach(movie => {
-        let div = document.createElement('div');
-        div.className = 'search-list-item';
-        div.dataset.id = movie.imdbID;
-        div.innerHTML = `
-          <div class="search-item-thumbnail"><img src="${movie.Poster}" /></div>
-          <div><h3>${movie.Title}</h3><p>${movie.Year}</p></div>
-        `;
-        div.addEventListener('click', () => {
-          window.location.href = `movie.html?id=${movie.imdbID}`;
+    for (const keyword of keywords) {
+      const res = await fetch(`https://www.omdbapi.com/?s=${keyword}&page=1&apikey=fc1fef96`);
+      const data = await res.json();
+      if (data.Response === "True") {
+        const valid = data.Search.filter(m => !usedIds.has(m.imdbID));
+        valid.forEach(m => {
+          usedIds.add(m.imdbID);
+          m.genre = keyword;
         });
-        searchList.appendChild(div);
-      });
+        genreMovies.push(valid);
+      }
     }
 
-    window.addEventListener('click', (e) => {
-      if (e.target !== movieSearchBox) {
-        searchList.classList.add('hide-search-list');
-      }
-    });
+    let index = 0;
+    let added = true;
 
-    loadSuggestedMovies();
-  </script>
+    while (added) {
+      added = false;
+      for (const genreList of genreMovies) {
+        if (genreList[index]) {
+          const movie = genreList[index];
+          const item = document.createElement('div');
+          item.className = 'suggested-movie';
+          item.dataset.id = movie.imdbID;
+          item.innerHTML = `
+            <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/200x300'}">
+            <div class="suggested-movie-title">${movie.Title}</div>
+            <div class="suggested-movie-year">${movie.Year}</div>
+            <div class="genre-label">${movie.genre}</div>
+          `;
+          item.addEventListener('click', () => {
+            window.location.href = "movie.html?id=" + movie.imdbID;
+          });
+          suggestedList.appendChild(item);
+          added = true;
+        }
+      }
+      index++;
+    }
+  }
+
+  async function findMovies() {
+    let searchTerm = movieSearchBox.value.trim();
+    if (searchTerm.length > 0) {
+      const res = await fetch(`https://www.omdbapi.com/?s=${searchTerm}&page=1&apikey=fc1fef96`);
+      const data = await res.json();
+      if (data.Response === "True") {
+        displayMovieList(data.Search);
+        searchList.classList.remove('hide-search-list');
+      }
+    } else {
+      searchList.classList.add('hide-search-list');
+    }
+  }
+
+  function displayMovieList(movies) {
+    searchList.innerHTML = "";
+    movies.forEach(movie => {
+      const div = document.createElement('div');
+      div.className = 'search-list-item';
+      div.dataset.id = movie.imdbID;
+      div.innerHTML = `
+        <div class="search-item-thumbnail"><img src="${movie.Poster}" /></div>
+        <div><h3>${movie.Title}</h3><p>${movie.Year}</p></div>
+      `;
+      div.addEventListener('click', () => {
+        window.location.href = "movie.html?id=" + movie.imdbID;
+      });
+      searchList.appendChild(div);
+    });
+  }
+
+  window.addEventListener('click', (e) => {
+    if (e.target !== movieSearchBox) {
+      searchList.classList.add('hide-search-list');
+    }
+  });
+
+  loadSuggestedMovies();
+</script>
+
 </body>
 </html>
