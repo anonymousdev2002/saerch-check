@@ -28,7 +28,6 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
     }
 
     h1 {
@@ -112,8 +111,10 @@
     }
 
     .suggested-section {
-      margin-top: 50px;
-      padding-bottom: 0;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      clear: both;
     }
 
     .suggested-title {
@@ -123,7 +124,7 @@
       -webkit-background-clip: text;
       color: transparent;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .suggested-wrapper {
@@ -190,8 +191,8 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 30px;
-      margin-top: 40px;
-      padding-bottom: 0;
+      margin-top: 30px;
+      margin-bottom: 0;
     }
 
     .movie-info, .movie-poster img {
@@ -213,7 +214,6 @@
       -webkit-text-fill-color: transparent;
       color: transparent;
       animation: shimmerMove 5s linear infinite;
-      margin-top: auto;
     }
 
     @media (max-width: 768px) {
@@ -222,7 +222,8 @@
       .search-item-thumbnail img { width: 40px; height: 60px; }
 
       .suggested-section {
-        margin-top: 40px;
+        margin-top: 25px;
+        margin-bottom: 5px;
       }
 
       .suggested-movie {
