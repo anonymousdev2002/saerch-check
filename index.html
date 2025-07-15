@@ -19,6 +19,18 @@
       overflow-x: hidden;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
     h1 {
       text-align: center;
       font-size: 3rem;
@@ -100,9 +112,7 @@
     }
 
     .suggested-section {
-      margin-top: 30px;
-      overflow: hidden;
-      clear: both;
+      margin-top: 50px;
       padding-bottom: 0;
     }
 
@@ -113,7 +123,7 @@
       -webkit-background-clip: text;
       color: transparent;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .suggested-wrapper {
@@ -194,7 +204,6 @@
     }
 
     footer {
-      margin-top: 0;
       text-align: center;
       padding: 16px 0;
       font-size: 0.95rem;
@@ -204,6 +213,7 @@
       -webkit-text-fill-color: transparent;
       color: transparent;
       animation: shimmerMove 5s linear infinite;
+      margin-top: auto;
     }
 
     @media (max-width: 768px) {
@@ -211,11 +221,14 @@
       .form-control { font-size: 1rem; padding: 12px; }
       .search-item-thumbnail img { width: 40px; height: 60px; }
 
+      .suggested-section {
+        margin-top: 40px;
+      }
+
       .suggested-movie {
         width: 150px;
         padding: 10px;
         border-radius: 12px;
-        margin-top:50px;
       }
 
       .suggested-movie img {
@@ -242,20 +255,21 @@
   </style>
 </head>
 <body>
+  <div class="wrapper">
+    <h1>🎬 Movie Search</h1>
 
-  <h1>🎬 Movie Search</h1>
+    <div class="search-container">
+      <input type="text" id="movie-search-box" class="form-control" placeholder="Search for a movie..." onkeyup="findMovies()">
+      <div class="search-list hide-search-list" id="search-list"></div>
+    </div>
 
-  <div class="search-container">
-    <input type="text" id="movie-search-box" class="form-control" placeholder="Search for a movie..." onkeyup="findMovies()">
-    <div class="search-list hide-search-list" id="search-list"></div>
+    <div class="suggested-section">
+      <h2 class="suggested-title">🔥 Suggested Movies</h2>
+      <div class="suggested-wrapper" id="suggested-list"></div>
+    </div>
+
+    <div class="result-container" id="result-grid"></div>
   </div>
-
-  <div class="suggested-section">
-    <h2 class="suggested-title">🔥 Suggested Movies</h2>
-    <div class="suggested-wrapper" id="suggested-list"></div>
-  </div>
-
-  <div class="result-container" id="result-grid"></div>
 
   <footer>
     🚀 Made by <strong>shivraj</strong> | Powered by 
@@ -354,6 +368,5 @@
 
   loadSuggestedMovies();
 </script>
-
 </body>
 </html>
